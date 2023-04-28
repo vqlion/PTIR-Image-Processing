@@ -38,6 +38,7 @@ transform_matrix = np.loadtxt(args.matrix_file)
 origin_keypoints_transform = np.hstack(np.array([0,0]))
 keypoints_distances = np.hstack(np.array([0 for _ in range(destination_keypoints.shape[0])]))
 
+print("----")
 print("Counting keypoints pairs between", args.origin_image_file, "and", args.destination_image_file)
 print("Threshold is set to", args.threshold)
 print(f"{origin_keypoints.shape[0]} keypoints in {args.origin_image_file}")
@@ -63,4 +64,4 @@ for distances in keypoints_distances:
     if np.amin(distances) <= threshold: 
         valid_pairs_count += 1
 
-print("Done! Found", valid_pairs_count, "valid pairs")
+print("Done! Found", valid_pairs_count, "valid pairs, which is", (valid_pairs_count / max(origin_keypoints.shape[0], destination_keypoints.shape[0]))*100, "% of the possible maximum")

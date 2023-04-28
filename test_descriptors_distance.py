@@ -3,7 +3,7 @@ import numpy as np
 
 import argparse
 
-parser = argparse.ArgumentParser(description='Keypoints distance computing script')
+parser = argparse.ArgumentParser(description='Keypoints descriptors distance computing script')
 
 parser.add_argument(
     '--origin_image_file', type=str, required=True,
