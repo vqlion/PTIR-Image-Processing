@@ -19,7 +19,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '--threshold', type=str, default=1,
+    '--threshold', type=int, default=1,
     help='the maximum distance between two points to be considered as a pair'
 )
 
@@ -60,8 +60,9 @@ for og_keypoint in origin_keypoints:
 keypoints_distances = np.delete(keypoints_distances, 0, 0)
 valid_pairs_count = 0
 
-for distances in keypoints_distances:
-    if np.amin(distances) <= threshold: 
-        valid_pairs_count += 1
+for distances_list in keypoints_distances:
+    for distance in distances_list:
+        if distance <= threshold:
+            valid_pairs_count += 1
 
 print("Done! Found", valid_pairs_count, "valid pairs, which is", (valid_pairs_count / max(origin_keypoints.shape[0], destination_keypoints.shape[0]))*100, "% of the possible maximum")

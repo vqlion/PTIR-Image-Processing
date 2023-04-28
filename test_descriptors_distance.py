@@ -1,4 +1,3 @@
-
 import numpy as np
 
 import argparse
@@ -21,8 +20,13 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '--threshold', type=str, default=1,
+    '--threshold', type=int, default=1,
     help='the maximum distance between two descriptors to be considered as a pair'
+)
+
+parser.add_argument(
+    '--desc_count', type=int, default=2,
+    help='the number of descriptors to keep for each point'
 )
 
 args = parser.parse_args()
@@ -33,7 +37,7 @@ def distance(desc1, desc2):
         sum += abs(desc1[i] - desc2[i])
     return sum
 
-k = 2
+descriptor_count = args.desc_count
 threshold = args.threshold
 
 desc1 = np.load(args.origin_image_file)['descriptors']
@@ -52,7 +56,7 @@ for index1 in range(len(desc1)):
     dist = np.array(distances_list)
     sorted_indices = np.argsort(dist[:, 1])
     sorted_dist = dist[sorted_indices]
-    best_dist.append(sorted_dist[:k]) # On garde les k descripteurs les plus proches
+    best_dist.append(sorted_dist[:descriptor_count]) # On garde les k descripteurs les plus proches
 
 
 # Pour chaque point de l'image 1 on regarde s'il correspond à un des k points de l'image 2 dont on a conservé les indices
