@@ -3,15 +3,11 @@ import argparse
 
 def loop_through_dir(path, extension):
     tmp = ''
-    for filename in os.listdir(path):
-        filepath = os.path.join(filename, path)
-        if os.path.isdir(filepath):
-            loop_through_dir(filepath)
-        if os.path.isfile(filepath):
-            ext = os.path.splitext(filepath)[-1].lower()
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ext = os.path.splitext(file)[-1].lower()
             if ext == extension:
-                tmp += filepath + '\r\n'
-                print(filepath)
+                tmp += os.path.join(root, file) + '\r\n'
     return tmp
 
     
