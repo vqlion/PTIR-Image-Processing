@@ -1,19 +1,19 @@
 import numpy as np
 import argparse
 
-parser = argparse.ArgumentParser(description='Sort by scores')
+# parser = argparse.ArgumentParser(description='Sort by scores')
 
-parser.add_argument(
-    '--path', type=str, required=True,
-    help='path to a file containing the keypoints and descriptors of the first image'
-)
+# parser.add_argument(
+#     '--path', type=str, required=True,
+#     help='path to a file containing the keypoints and descriptors of the first image'
+# )
 
-parser.add_argument(
-    '--nb', type=str, required=True,
-    help='number of points to keep'
-)
+# parser.add_argument(
+#     '--nb', type=str, required=True,
+#     help='number of points to keep'
+# )
 
-args = parser.parse_args()
+# args = parser.parse_args()
 
 def score_sorter(path, nb):
 
@@ -27,7 +27,7 @@ def score_sorter(path, nb):
     sorted_descriptors = [descriptors[i].tolist() for i in indices]
     scores = sorted(scores, reverse=True)
 
-    with open(args.path, 'wb') as output_file:
+    with open(path, 'wb') as output_file:
         np.savez(
             output_file,
             keypoints=sorted_keypoints[:number_of_points],
@@ -35,4 +35,4 @@ def score_sorter(path, nb):
             descriptors=sorted_descriptors[:number_of_points]
         )
 
-score_sorter(args.path, args.nb)
+# score_sorter(args.path, args.nb)

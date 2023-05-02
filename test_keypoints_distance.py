@@ -1,29 +1,29 @@
 import numpy as np  
 import argparse
 
-parser = argparse.ArgumentParser(description='Keypoints distance computing script')
+# parser = argparse.ArgumentParser(description='Keypoints distance computing script')
 
-parser.add_argument(
-    '--origin_image_file', type=str, required=True,
-    help='path to a file containing the keypoints and descriptors of the first image'
-)
+# parser.add_argument(
+#     '--origin_image_file', type=str, required=False,
+#     help='path to a file containing the keypoints and descriptors of the first image'
+# )
 
-parser.add_argument(
-    '--destination_image_file', type=str, required=True,
-    help='path to a file containing the keypoints and descriptors of the second image'
-)
+# parser.add_argument(
+#     '--destination_image_file', type=str, required=False,
+#     help='path to a file containing the keypoints and descriptors of the second image'
+# )
 
-parser.add_argument(
-    '--matrix_file', type=str, required=True,
-    help='path to a file containing the transform matrix from the origin image to the destination image'
-)
+# parser.add_argument(
+#     '--matrix_file', type=str, required=False,
+#     help='path to a file containing the transform matrix from the origin image to the destination image'
+# )
 
-parser.add_argument(
-    '--threshold', type=int, default=1,
-    help='the maximum distance between two points to be considered as a pair'
-)
+# parser.add_argument(
+#     '--threshold', type=int, default=1,
+#     help='the maximum distance between two points to be considered as a pair'
+# )
 
-args = parser.parse_args()
+# args = parser.parse_args()
 
 def keypoints_distance(file1, file2, matrix_file, threshold):
 
@@ -34,12 +34,12 @@ def keypoints_distance(file1, file2, matrix_file, threshold):
     origin_keypoints_transform = np.hstack(np.array([0,0]))
     keypoints_distances = np.hstack(np.array([0 for _ in range(destination_keypoints.shape[0])]))
 
-    print("----")
-    print("Counting keypoints pairs between", file1, "and", file2)
-    print("Threshold is set to", threshold)
-    print(f"{origin_keypoints.shape[0]} keypoints in {file1}")
-    print(f"{destination_keypoints.shape[0]} keypoints in {file2}")
-    print("----")
+    # print("----")
+    # print("Counting keypoints pairs between", file1, "and", file2)
+    # print("Threshold is set to", threshold)
+    # print(f"{origin_keypoints.shape[0]} keypoints in {file1}")
+    # print(f"{destination_keypoints.shape[0]} keypoints in {file2}")
+    # print("----")
 
     for og_keypoint in origin_keypoints:
         og_keypoint = np.append(og_keypoint, 1)
@@ -61,6 +61,6 @@ def keypoints_distance(file1, file2, matrix_file, threshold):
             if distance <= threshold:
                 valid_pairs_count += 1
 
-    return(valid_pairs_count / max(origin_keypoints.shape[0], destination_keypoints.shape[0])*100)
+    return((valid_pairs_count / origin_keypoints.shape[0])*100)
 
-print(keypoints_distance(args.origin_image_file, args.destination_image_file, args.matrix_file, args.threshold))
+# print(keypoints_distance(args.origin_image_file, args.destination_image_file, args.matrix_file, args.threshold))

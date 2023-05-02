@@ -1,34 +1,34 @@
 import numpy as np
 import argparse
 
-parser = argparse.ArgumentParser(description='Keypoints descriptors distance computing script')
+# parser = argparse.ArgumentParser(description='Keypoints descriptors distance computing script')
 
-parser.add_argument(
-    '--origin_image_file', type=str, required=True,
-    help='file to a file containing the keypoints and descriptors of the first image'
-)
+# parser.add_argument(
+#     '--origin_image_file', type=str, required=False,
+#     help='file to a file containing the keypoints and descriptors of the first image'
+# )
 
-parser.add_argument(
-    '--destination_image_file', type=str, required=True,
-    help='file to a file containing the keypoints and descriptors of the second image'
-)
+# parser.add_argument(
+#     '--destination_image_file', type=str, required=False,
+#     help='file to a file containing the keypoints and descriptors of the second image'
+# )
 
-parser.add_argument(
-    '--matrix_file', type=str, required=True,
-    help='file to a file containing the transform matrix from the origin image to the destination image'
-)
+# parser.add_argument(
+#     '--matrix_file', type=str, required=False,
+#     help='file to a file containing the transform matrix from the origin image to the destination image'
+# )
 
-parser.add_argument(
-    '--threshold', type=int, default=1,
-    help='the maximum distance between two descriptors to be considered as a pair'
-)
+# parser.add_argument(
+#     '--threshold', type=int, default=1,
+#     help='the maximum distance between two descriptors to be considered as a pair'
+# )
 
-parser.add_argument(
-    '--desc_count', type=int, default=2,
-    help='the number of descriptors to keep for each point'
-)
+# parser.add_argument(
+#     '--desc_count', type=int, default=2,
+#     help='the number of descriptors to keep for each point'
+# )
 
-args = parser.parse_args()
+# args = parser.parse_args()
 
 def distance(desc1, desc2):
     sum = 0
@@ -76,4 +76,4 @@ def descriptors_distance(file1, file2, matrix_file, threshold, descriptor_count)
 
     return(round(correct/len(pts1)*100, 2))
 
-print(descriptors_distance(args.origin_image_file, args.destination_image_file, args.matrix_file, args.threshold, args.desc_count))
+# print(descriptors_distance(args.origin_image_file, args.destination_image_file, args.matrix_file, args.threshold, args.desc_count))
