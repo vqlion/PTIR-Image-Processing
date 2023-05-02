@@ -25,44 +25,42 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-threshold = args.threshold
+def keypoints_distance(file1, file2, matrix_file, threshold):
 
-origin_arrays = np.load(args.origin_image_file)
-origin_keypoints = origin_arrays['keypoints']
+    origin_keypoints = np.load(file1)['keypoints']
+    destination_keypoints = np.load(file2)['keypoints']
+    transform_matrix = np.loadtxt(matrix_file)
 
-destination_arrays = np.load(args.destination_image_file)
-destination_keypoints = destination_arrays['keypoints']
+    origin_keypoints_transform = np.hstack(np.array([0,0]))
+    keypoints_distances = np.hstack(np.array([0 for _ in range(destination_keypoints.shape[0])]))
 
-transform_matrix = np.loadtxt(args.matrix_file)
+    print("----")
+    print("Counting keypoints pairs between", file1, "and", file2)
+    print("Threshold is set to", threshold)
+    print(f"{origin_keypoints.shape[0]} keypoints in {file1}")
+    print(f"{destination_keypoints.shape[0]} keypoints in {file2}")
+    print("----")
 
-origin_keypoints_transform = np.hstack(np.array([0,0]))
-keypoints_distances = np.hstack(np.array([0 for _ in range(destination_keypoints.shape[0])]))
+    for og_keypoint in origin_keypoints:
+        og_keypoint = np.append(og_keypoint, 1)
+        keypoint_transform = np.matmul(og_keypoint, transform_matrix)
+        keypoint_transform = keypoint_transform[:-1]
 
-print("----")
-print("Counting keypoints pairs between", args.origin_image_file, "and", args.destination_image_file)
-print("Threshold is set to", args.threshold)
-print(f"{origin_keypoints.shape[0]} keypoints in {args.origin_image_file}")
-print(f"{destination_keypoints.shape[0]} keypoints in {args.destination_image_file}")
-print("----")
+        keypoint_distance_vector = np.empty(0)
+        for dst_keypoint in destination_keypoints:
+            keypoint_distance_vector = np.append(keypoint_distance_vector, np.linalg.norm(keypoint_transform-dst_keypoint))
 
-for og_keypoint in origin_keypoints:
-    og_keypoint = np.append(og_keypoint, 1)
-    keypoint_transform = np.matmul(og_keypoint, transform_matrix)
-    keypoint_transform = keypoint_transform[:-1]
+        keypoints_distances = np.vstack((keypoints_distances, keypoint_distance_vector))
+        origin_keypoints_transform = np.vstack((origin_keypoints_transform, keypoint_transform))
 
-    keypoint_distance_vector = np.empty(0)
-    for dst_keypoint in destination_keypoints:
-        keypoint_distance_vector = np.append(keypoint_distance_vector, np.linalg.norm(keypoint_transform-dst_keypoint))
+    keypoints_distances = np.delete(keypoints_distances, 0, 0)
+    valid_pairs_count = 0
 
-    keypoints_distances = np.vstack((keypoints_distances, keypoint_distance_vector))
-    origin_keypoints_transform = np.vstack((origin_keypoints_transform, keypoint_transform))
+    for distances_list in keypoints_distances:
+        for distance in distances_list:
+            if distance <= threshold:
+                valid_pairs_count += 1
 
-keypoints_distances = np.delete(keypoints_distances, 0, 0)
-valid_pairs_count = 0
+    return(valid_pairs_count / max(origin_keypoints.shape[0], destination_keypoints.shape[0])*100)
 
-for distances_list in keypoints_distances:
-    for distance in distances_list:
-        if distance <= threshold:
-            valid_pairs_count += 1
-
-print("Done! Found", valid_pairs_count, "valid pairs, which is", (valid_pairs_count / max(origin_keypoints.shape[0], destination_keypoints.shape[0]))*100, "% of the possible maximum")
+print(keypoints_distance(args.origin_image_file, args.destination_image_file, args.matrix_file, args.threshold))
