@@ -15,21 +15,24 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-keypoints = np.load(args.path)['keypoints']
-scores = np.load(args.path)['scores']
-descriptors = np.load(args.path)['descriptors']
+def score_sorter(path, nb):
 
-number_of_points = int(args.nb)
+    keypoints = np.load(path)['keypoints']
+    scores = np.load(path)['scores']
+    descriptors = np.load(path)['descriptors']
+    number_of_points = int(nb)
 
-indices = np.argsort(scores)[::-1]
-sorted_keypoints = [keypoints[i].tolist() for i in indices]
-sorted_descriptors = [descriptors[i].tolist() for i in indices]
-scores = sorted(scores, reverse=True)
+    indices = np.argsort(scores)[::-1]
+    sorted_keypoints = [keypoints[i].tolist() for i in indices]
+    sorted_descriptors = [descriptors[i].tolist() for i in indices]
+    scores = sorted(scores, reverse=True)
 
-with open(args.path, 'wb') as output_file:
-    np.savez(
-        output_file,
-        keypoints=sorted_keypoints[:number_of_points],
-        scores=scores[:number_of_points],
-        descriptors=sorted_descriptors[:number_of_points]
-    )
+    with open(args.path, 'wb') as output_file:
+        np.savez(
+            output_file,
+            keypoints=sorted_keypoints[:number_of_points],
+            scores=scores[:number_of_points],
+            descriptors=sorted_descriptors[:number_of_points]
+        )
+
+score_sorter(args.path, args.nb)
