@@ -53,7 +53,6 @@ for root, dirs, files in os.walk(path):
     for file in files:
         if file == main_file_name:
             main_file = file
-            print(main_file)
 
     if not main_file:
         print("No main file was found in this directory.")
@@ -68,7 +67,9 @@ for root, dirs, files in os.walk(path):
         scores_output_array[i] = scores(root, i)
 
     output_object = {"image_folder": root,
-                    "scores": scores_output_array}
+                    "scores": scores_output_array,
+                    "images_tests": []
+                    }
 
     for file in files:
         if file == main_file or os.path.splitext(file)[-1].lower() != extension:
@@ -84,7 +85,7 @@ for root, dirs, files in os.walk(path):
         file_path = os.path.join(root, file)
         matrix_file_path = os.path.join(root, matrix_file)
 
-        print(main_file, file, matrix_file)
+        print("Comparing ", main_file, " and ", file, " with transform matrix ", matrix_file)
 
         score_sorter(file_path, number_of_points)
 
@@ -95,16 +96,16 @@ for root, dirs, files in os.walk(path):
             keypoints_distances_output[i] = keypoints_distance(main_file_path, file_path, matrix_file_path, i)
             descriptors_distances_output[i] = descriptors_distance(main_file_path, file_path, matrix_file_path, i, 3)
 
-        output_object["images_tests"] = {
+        output_object["images_tests"].append({
             "image_1": main_file_path,
             "image_2": file_path,
             "keypoints_distances": keypoints_distances_output,
             "descriptors_distances": descriptors_distances_output
-        }
+        })
 
         # print(keypoints_distance(main_file_path, file_path, matrix_file_path, 10))
         # print(descriptors_distance(main_file_path, file_path, matrix_file_path, 10, 2))
-        
+
     output_array.append(output_object)
 
 json_output.append(output_array)
