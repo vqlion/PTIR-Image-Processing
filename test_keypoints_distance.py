@@ -62,6 +62,6 @@ def keypoints_distance(file1, file2, matrix_file, threshold):
                 valid_pairs_count += 1
                 break
 
-    return((valid_pairs_count / origin_keypoints.shape[0])*100)
+    return(round((valid_pairs_count / origin_keypoints.shape[0])*100), 2)
 
 # print(keypoints_distance(args.origin_image_file, args.destination_image_file, args.matrix_file, args.threshold))
