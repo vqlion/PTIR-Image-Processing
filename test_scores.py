@@ -2,19 +2,19 @@ import numpy as np
 import argparse
 import glob
 
-parser = argparse.ArgumentParser(description='Keypoints scores computing script')
+# parser = argparse.ArgumentParser(description='Keypoints scores computing script')
 
-parser.add_argument(
-    '--folder', type=str, required=False,
-    help='folder containing the files keypoints and descriptors'
-)
+# parser.add_argument(
+#     '--folder', type=str, required=False,
+#     help='folder containing the files keypoints and descriptors'
+# )
 
-parser.add_argument(
-    '--threshold', type=int, default=1,
-    help='the maximum distance between two descriptors to be considered as a pair'
-)
+# parser.add_argument(
+#     '--threshold', type=int, default=1,
+#     help='the maximum distance between two descriptors to be considered as a pair'
+# )
 
-args = parser.parse_args()
+# args = parser.parse_args()
 
 def distance(a, b):
     sum = 0
@@ -65,4 +65,4 @@ def scores(folder_path, threshold):
 
     return(scores)
 
-print(scores(args.folder, args.threshold))
+# print(scores(args.folder, args.threshold))

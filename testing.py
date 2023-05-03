@@ -6,6 +6,7 @@ import json
 from test_descriptors_distance import descriptors_distance
 from test_keypoints_distance import keypoints_distance
 from score_sorter import score_sorter
+from test_scores import scores
 
 parser = argparse.ArgumentParser(description='Launch the tests')
 
@@ -61,6 +62,13 @@ for root, dirs, files in os.walk(path):
     absolute_main_file_name = main_file[0]
     main_file_path = os.path.join(root, main_file_name)
     score_sorter(main_file_path, number_of_points)
+    scores_output_array = [0 for _ in range(threshold_range)]
+
+    for i in range(threshold_range):
+        scores_output_array[i] = scores(root, i)
+
+    output_object = {"image_folder": root,
+                    "scores": scores_output_array}
 
     for file in files:
         if file == main_file or os.path.splitext(file)[-1].lower() != extension:
@@ -87,15 +95,17 @@ for root, dirs, files in os.walk(path):
             keypoints_distances_output[i] = keypoints_distance(main_file_path, file_path, matrix_file_path, i)
             descriptors_distances_output[i] = descriptors_distance(main_file_path, file_path, matrix_file_path, i, 3)
 
-        output_array.append({
+        output_object["images_tests"] = {
             "image_1": main_file_path,
             "image_2": file_path,
             "keypoints_distances": keypoints_distances_output,
             "descriptors_distances": descriptors_distances_output
-        })
+        }
 
         # print(keypoints_distance(main_file_path, file_path, matrix_file_path, 10))
         # print(descriptors_distance(main_file_path, file_path, matrix_file_path, 10, 2))
+        
+    output_array.append(output_object)
 
 json_output.append(output_array)
 
