@@ -1,6 +1,7 @@
 import os
 import argparse
 import sys
+import json
 
 from test_descriptors_distance import descriptors_distance
 from test_keypoints_distance import keypoints_distance
@@ -18,12 +19,34 @@ parser.add_argument(
     help='name of the main file (compared to all other npz files in directory)'
 )
 
+parser.add_argument(
+    '--output_file', type=str, default="output.json",
+    help='name of the output file to append the output to'
+)
+
+parser.add_argument(
+    '--threshold_range', type=int, default=50,
+    help='number of threshold to test'
+)
+
+parser.add_argument(
+    '--number_of_points', type=int, default=50,
+    help='number of keypoints to keep for each image'
+)
+
 args = parser.parse_args()
 main_file_name = args.main_file
+output_file = args.output_file
+threshold_range = args.threshold_range
+number_of_points = args.number_of_points
 main_file = ""
 path = args.path
 extension = '.npz'
-number_of_points = 127
+output_array = []
+try:
+    json_output = json.load(open(output_file))
+except:
+    json_output = []
 
 for root, dirs, files in os.walk(path):
     for file in files:
@@ -57,9 +80,24 @@ for root, dirs, files in os.walk(path):
 
         score_sorter(file_path, number_of_points)
 
-        print(keypoints_distance(main_file_path, file_path, matrix_file_path, 1))
-        print(descriptors_distance(main_file_path, file_path, matrix_file_path, 1, 2))
+        keypoints_distances_output = [0 for _ in range(threshold_range)]
+        descriptors_distances_output = [0 for _ in range(threshold_range)]
 
+        for i in range(threshold_range):
+            keypoints_distances_output[i] = keypoints_distance(main_file_path, file_path, matrix_file_path, i)
+            descriptors_distances_output[i] = descriptors_distance(main_file_path, file_path, matrix_file_path, i, 3)
 
-        
-        
+        output_array.append({
+            "image_1": main_file_path,
+            "image_2": file_path,
+            "keypoints_distances": keypoints_distances_output,
+            "descriptors_distances": descriptors_distances_output
+        })
+
+        # print(keypoints_distance(main_file_path, file_path, matrix_file_path, 10))
+        # print(descriptors_distance(main_file_path, file_path, matrix_file_path, 10, 2))
+
+json_output.append(output_array)
+
+with open(output_file, "w") as file:
+    json.dump(json_output, file)

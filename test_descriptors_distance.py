@@ -58,7 +58,6 @@ def descriptors_distance(file1, file2, matrix_file, threshold, descriptor_count)
 
     # Pour chaque point de l'image 1 on regarde s'il correspond à un des k points de l'image 2 dont on a conservé les indices
     correct = 0
-    booleans = [0] * len(pts1)
     for i in range(len(pts1)):
 
         # On applique la transformation au point de l'image 1
