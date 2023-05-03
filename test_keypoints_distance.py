@@ -60,6 +60,7 @@ def keypoints_distance(file1, file2, matrix_file, threshold):
         for distance in distances_list:
             if distance <= threshold:
                 valid_pairs_count += 1
+                break
 
     return((valid_pairs_count / origin_keypoints.shape[0])*100)
 
