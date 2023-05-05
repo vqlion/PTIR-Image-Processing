@@ -16,6 +16,11 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    '--model', type=str, required=True,
+    help='name of the model used'
+)
+
+parser.add_argument(
     '--main_file', type=str, default="1.ppm.npz",
     help='name of the main file (compared to all other npz files in directory)'
 )
@@ -40,10 +45,13 @@ main_file_name = args.main_file
 output_file = args.output_file
 threshold_range = args.threshold_range
 number_of_points = args.number_of_points
+model = args.model
+
 main_file = ""
 path = args.path
 extension = '.npz'
 output_array = []
+
 try:
     json_output = json.load(open(output_file))
 except:
@@ -66,7 +74,8 @@ for root, dirs, files in os.walk(path):
     for i in range(threshold_range):
         scores_output_array[i] = scores(root, i)
 
-    output_object = {"image_folder": root,
+    output_object = {"model": model,
+                    "image_folder": root,
                     "scores": scores_output_array,
                     "images_tests": []
                     }
