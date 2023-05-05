@@ -50,7 +50,6 @@ model = args.model
 main_file = ""
 path = args.path
 extension = '.npz'
-output_array = []
 
 try:
     json_output = json.load(open(output_file))
@@ -115,9 +114,7 @@ for root, dirs, files in os.walk(path):
         # print(keypoints_distance(main_file_path, file_path, matrix_file_path, 10))
         # print(descriptors_distance(main_file_path, file_path, matrix_file_path, 10, 2))
 
-    output_array.append(output_object)
-
-json_output.append(output_array)
+    json_output.append(output_object)
 
 with open(output_file, "w") as file:
     json.dump(json_output, file)
