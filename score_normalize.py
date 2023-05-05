@@ -25,7 +25,7 @@ def score_normalize(path, nb):
     
     # Convert from colmap format to pixels and normalize descriptors 
     keypoints = np.round(keypoints).astype(int)
-    descriptors /= np.mean(descriptors)
+    descriptors /= np.mean(np.abs(descriptors))
 
     # On range les keypoints et descriptors par ordre décroissant de scores
     indices = np.argsort(scores)[::-1]
