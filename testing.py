@@ -5,7 +5,7 @@ import json
 
 from test_descriptors_distance import descriptors_distance
 from test_keypoints_distance import keypoints_distance
-from score_sorter import score_sorter
+from score_normalize import score_normalize
 from test_scores import scores
 
 parser = argparse.ArgumentParser(description='Launch the tests')
@@ -67,7 +67,7 @@ for root, dirs, files in os.walk(path):
     
     absolute_main_file_name = main_file[0]
     main_file_path = os.path.join(root, main_file_name)
-    score_sorter(main_file_path, number_of_points)
+    score_normalize(main_file_path, number_of_points)
     scores_output_array = [0 for _ in range(threshold_range)]
 
     for i in range(threshold_range):
@@ -95,7 +95,7 @@ for root, dirs, files in os.walk(path):
 
         print("Comparing ", main_file, " and ", file, " with transform matrix ", matrix_file)
 
-        score_sorter(file_path, number_of_points)
+        score_normalize(file_path, number_of_points)
 
         keypoints_distances_output = [0 for _ in range(threshold_range)]
         descriptors_distances_output = [0 for _ in range(threshold_range)]

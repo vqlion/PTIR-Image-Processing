@@ -15,7 +15,7 @@ import argparse
 
 # args = parser.parse_args()
 
-def score_sorter(path, nb):
+def score_normalize(path, nb):
     
     # Importation
     keypoints = np.load(path)['keypoints']
