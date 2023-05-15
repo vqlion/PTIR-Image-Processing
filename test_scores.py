@@ -16,10 +16,11 @@ import glob
 
 # args = parser.parse_args()
 
-def distance(a, b):
+def distance_desc(descA, descB):
     sum = 0
-    for i in range(len(a)):
-        sum += abs(a[i] - b[i])
+    for i in range(len(descA)):
+       sum += abs(descA[i] - descB[i]) 
+    sum /= (len(descA) / 128)
     return sum
 
 def scores(folder_path, threshold):
@@ -53,8 +54,9 @@ def scores(folder_path, threshold):
         for i in range(len(new_pts0)):
             stop = False
             j = 0
+            print(distance_desc(descs[0][i], descs[img2][j]))
             while not stop and j < len(pts[img2]):
-                if distance(new_pts0[i][:2], pts[img2][j]) <= threshold and distance(descs[0][i], descs[img2][j]) <= threshold:
+                if np.linalg.norm(new_pts0[i][:2] - pts[img2][j]) <= threshold and distance_desc(descs[0][i], descs[img2][j]) <= 100 + 10*threshold:
                     scores[i] += 1
                     stop = True
                 j += 1

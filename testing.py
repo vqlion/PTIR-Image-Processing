@@ -31,7 +31,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '--threshold_range', type=int, default=50,
+    '--threshold_range', type=int, default=10,
     help='number of threshold to test'
 )
 

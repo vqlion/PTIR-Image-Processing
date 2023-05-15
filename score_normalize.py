@@ -41,4 +41,4 @@ def score_normalize(path, nb):
             descriptors=sorted_descriptors[:number_of_points]
         )
 
-# score_sorter(args.path, args.nb)
+# score_normalize(args.path, args.nb)

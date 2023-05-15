@@ -30,12 +30,6 @@ import argparse
 
 # args = parser.parse_args()
 
-def distance(desc1, desc2):
-    sum = 0
-    for i in range(len(desc1)):
-        sum += abs(desc1[i] - desc2[i])
-    return sum
-
 def descriptors_distance(file1, file2, matrix_file, threshold, descriptor_count):
     desc1 = np.load(file1)['descriptors']
     desc2 = np.load(file2)['descriptors']
@@ -49,7 +43,7 @@ def descriptors_distance(file1, file2, matrix_file, threshold, descriptor_count)
         sorted_dist = []
         distances_list = []
         for index2 in range(len(desc2)):
-            distances_list.append([index2, distance(desc1[index1], desc2[index2])])
+            distances_list.append([index2, np.linalg.norm(desc1[index1] - desc2[index2])])
         dist = np.array(distances_list)
         sorted_indices = np.argsort(dist[:, 1])
         sorted_dist = dist[sorted_indices]
