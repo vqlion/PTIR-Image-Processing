@@ -31,7 +31,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '--threshold_range', type=int, default=10,
+    '--threshold_range', type=int, default=50,
     help='number of threshold to test'
 )
 
@@ -58,6 +58,11 @@ except:
 
 for root, dirs, files in os.walk(path):
     for file in files:
+        file_path = os.path.join(root, file)
+        score_normalize(file_path, number_of_points)
+
+for root, dirs, files in os.walk(path):
+    for file in files:
         if file == main_file_name:
             main_file = file
 
@@ -67,7 +72,7 @@ for root, dirs, files in os.walk(path):
     
     absolute_main_file_name = main_file[0]
     main_file_path = os.path.join(root, main_file_name)
-    score_normalize(main_file_path, number_of_points)
+    # score_normalize(main_file_path, number_of_points)
     scores_output_array = [0 for _ in range(threshold_range)]
 
     for i in range(threshold_range):
@@ -95,7 +100,7 @@ for root, dirs, files in os.walk(path):
 
         print("Comparing ", main_file, " and ", file, " with transform matrix ", matrix_file)
 
-        score_normalize(file_path, number_of_points)
+        # score_normalize(file_path, number_of_points)
 
         keypoints_distances_output = [0 for _ in range(threshold_range)]
         descriptors_distances_output = [0 for _ in range(threshold_range)]
