@@ -58,6 +58,8 @@ except:
 
 for root, dirs, files in os.walk(path):
     for file in files:
+        if os.path.splitext(file)[-1].lower() != extension:
+            continue
         file_path = os.path.join(root, file)
         score_normalize(file_path, number_of_points)
 
