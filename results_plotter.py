@@ -58,7 +58,7 @@ for model in range(len(json_files)):
 
         axs[2][model].set_ylabel('Scores regressions')
         axs[2][model].set_xlabel('Keypoints')
-        for k in np.arange(0, 15, 1):
+        for k in np.arange(0, 10, 1):
             coefficients = np.polyfit(range(50), dataset["scores"][k], 1)
             regression = np.poly1d(coefficients)
             axs[2][model].plot(regression(range(50)), lw=1)

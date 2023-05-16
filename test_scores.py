@@ -54,9 +54,8 @@ def scores(folder_path, threshold):
         for i in range(len(new_pts0)):
             stop = False
             j = 0
-            print(distance_desc(descs[0][i], descs[img2][j]))
             while not stop and j < len(pts[img2]):
-                if np.linalg.norm(new_pts0[i][:2] - pts[img2][j]) <= threshold and distance_desc(descs[0][i], descs[img2][j]) <= 100 + 10*threshold:
+                if np.linalg.norm(new_pts0[i][:2] - pts[img2][j]) <= threshold and distance_desc(descs[0][i], descs[img2][j]) <= 100 + 3*threshold:
                     scores[i] += 1
                     stop = True
                 j += 1
